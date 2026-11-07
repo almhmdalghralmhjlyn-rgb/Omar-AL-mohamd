@@ -1,169 +1,263 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta name="google-site-verification" content="W-OB1Vz78zgVE583WhMDEDB_nYwXytyZRR0OP5--M0I" />
-<meta charset="UTF-8">
-<title>منصة الكتب الشاملة</title>
-<style>
-  :root {
-    --primary: #0f4c5c;
-    --accent: #e3b85a;
-    --dark: #09131a;
-    --light: #fdfbf7;
-  }
-  body { margin: 0; font-family: 'Amiri', serif; background: var(--dark); color: var(--light); }
-  .view { display: none; padding: 20px; }
-  .active { display: block; }
-  header { background: var(--primary); padding: 15px; text-align: center; border-bottom: 3px solid var(--accent); }
-  .search-box { width: 80%; max-width: 400px; padding: 10px; border-radius: 20px; border: 2px solid var(--accent); margin: 10px 0; }
-  .btn { background: var(--accent); color: var(--dark); border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; margin: 5px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 20px; }
-  .card { background: #162432; border: 1px solid var(--accent); border-radius: 10px; padding: 15px; text-align: center; cursor: pointer; }
-  .card img { max-width: 100%; height: 150px; object-fit: cover; border-radius: 5px; }
-  #reader-view { text-align: center; }
-  iframe { width: 100%; height: 80vh; background: white; border-radius: 10px; border: none; }
-  .form-container { max-width: 400px; margin: 40px auto; background: #162432; padding: 20px; border-radius: 10px; text-align: center; }
-  input, textarea { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; }
-  .rating { color: var(--accent); font-size: 1.2rem; }
-</style>
+    <meta name="google-site-verification" content="W-OB1Vz78gVE583WhMDEDB_nYwXytyZR0OPO5--MOI" />
+    <meta charset="UTF-8">
+    <title>منصة الكتب الإسلامية</title>
+    <style>
+        :root {
+            --primary: #04c5c;
+            --accent: #e3b85a;
+            --dark: #09131a;
+            --light: #fdfbf7;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Amiri', serif;
+            background: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background-image: radial-gradient(var(--accent) 15%, transparent 16%), radial-gradient(var(--accent) 15%, transparent 16%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+            opacity: 0.05;
+            z-index: 0;
+            animation: swingIdentity 10s infinite ease-in-out;
+            transform-origin: center center;
+            pointer-events: none;
+        }
+
+        @keyframes swingIdentity {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(5deg) scale(1.1); }
+        }
+
+        header, .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            background: var(--primary);
+            padding: 35px 25px 25px;
+            text-align: center;
+            border-bottom: 4px solid var(--accent);
+        }
+
+        .dots-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: pulseDot 1.5s infinite ease-in-out;
+        }
+
+        .dot:nth-child(2) { animation-delay: 0.5s; }
+        .dot:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .header-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .btn-uniform {
+            min-width: 140px;
+            padding: 10px 20px;
+            font-family: 'Amiri', serif;
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--dark);
+            background-color: var(--accent);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .btn-uniform:hover {
+            background-color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .container { max-width: 1100px; margin: auto; padding: 20px; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: #14212b;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .view-mode { display: none; }
+        .active { display: block; }
+        .search-box { display: block; margin: 20px auto; width: 80%; max-width: 400px; padding: 10px; border-radius: 20px; border: 1px solid var(--accent); background: var(--dark); color: var(--light); text-align: center; font-family: inherit; }
+        iframe { width: 100%; height: 80vh; border: none; border-radius: 10px; }
+        .form-container { max-width: 400px; margin: 40px auto; padding: 20px; background: #14212b; border-radius: 15px; }
+        input, textarea { width: 100%; margin: 10px 0; padding: 10px; box-sizing: border-box; border-radius: 5px; border: 1px solid #333; background: var(--dark); color: var(--light); font-family: inherit; }
+    </style>
 </head>
 <body>
 
-<header>
-  <h1>منصة الكتب الإسلامية</h1>
-  <div>
-    <button class="btn" onclick="showView('reader-view')">المكتبة</button>
-    <button class="btn" onclick="showView('writer-login-view')">دخول الكاتب</button>
-  </div>
-</header>
+    <header>
+        <h1>منصة الكتب الإسلامية</h1>
+        <div class="dots-container">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <div class="header-buttons">
+            <button class="btn-uniform" onclick="showView('reader-view')">المكتبة</button>
+            <button class="btn-uniform" onclick="showView('writer-login-view')">دخول الكاتب</button>
+        </div>
+    </header>
 
-<div id="reader-view" class="view active">
-  <input type="text" id="search" class="search-box" placeholder="ابحث عن كتاب..." oninput="filterBooks()">
-  <div class="grid" id="book-grid"></div>
-  <div id="viewer-area" style="display:none;">
-    <button class="btn" onclick="closeBook()">العودة للمكتبة</button>
-    <h2 id="viewing-title"></h2>
-    <div class="rating" id="viewing-stars"></div>
-    <p>شرح بواسطة: <span id="viewing-author"></span></p>
-    <iframe id="pdf-frame"></iframe>
-    <div>
-      <h3>قيِّم الكتاب:</h3>
-      <button class="btn" onclick="rateBook(5)">⭐⭐⭐⭐⭐</button>
-      <button class="btn" onclick="rateBook(4)">⭐⭐⭐⭐</button>
-      <button class="btn" onclick="rateBook(3)">⭐⭐⭐</button>
+    <div class="container">
+        <div id="reader-view" class="view-mode active">
+            <input type="text" id="search" class="search-box" placeholder="ابحث عن كتاب..." oninput="filterBooks()">
+            <div class="grid" id="book-grid">
+                <!-- البطاقات تضاف هنا بواسطة جافا سكريبت -->
+            </div>
+        </div>
+
+        <div id="viewer-area" class="view-mode">
+            <button class="btn-uniform" style="margin-bottom: 10px;" onclick="showView('reader-view')">العودة</button>
+            <iframe id="pdf-frame"></iframe>
+        </div>
+
+        <div id="writer-login-view" class="view-mode">
+            <div class="form-container">
+                <h2>تسجيل دخول الكاتب</h2>
+                <input type="text" id="username" placeholder="اسم المستخدم">
+                <input type="password" id="password" placeholder="كلمة المرور">
+                <button class="btn-uniform" style="width: 100%;" onclick="alert('تم تسجيل الدخول'); showView('writer-dashboard');">دخول</button>
+            </div>
+        </div>
+
+        <div id="writer-dashboard" class="view-mode">
+            <button class="btn-uniform" onclick="showView('reader-view')">عرض الموقع</button>
+            <div class="form-container">
+                <h2>إضافة كتاب جديد</h2>
+                <input type="text" id="new-title" placeholder="عنوان الكتاب">
+                <input type="text" id="new-author" placeholder="اسم المؤلف">
+                <input type="text" id="new-url" placeholder="رابط ملف PDF">
+                <input type="text" id="new-img" placeholder="رابط صورة الغلاف">
+                <button class="btn-uniform" style="width: 100%;" onclick="publishBook()">نشر الكتاب</button>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<div id="writer-login-view" class="view">
-  <div class="form-container">
-    <h2>تسجيل دخول الكاتب</h2>
-    <input type="text" placeholder="اسم المستخدم">
-    <input type="password" placeholder="كلمة المرور">
-    <button class="btn" onclick="alert('تم الدخول!'); showView('writer-dashboard');">دخول</button>
-  </div>
-</div>
+    <script>
+        let books = [
+            {
+                title: "صحيح البخاري",
+                author: "الشارح: لجنة التحقيق",
+                url: "https://archive.org/download/Sahih-Al-Bukhari-Bait-Al-Sunnah/Sahih-Al-Bukhari-Bait-al-Sunnah-Bait-al-Sunnah.pdf",
+                img: "https://pl.pingaing.com/736x/25/1e/7c/251ce7da757406cf7406cf8fb11aa.jpg",
+                rating: 5
+            }
+        ];
 
-<div id="writer-dashboard" class="view">
-  <div class="form-container">
-    <h2>لوحة التحكم - نشر كتاب</h2>
-    <input type="text" id="new-title" placeholder="عنوان الكتاب">
-    <input type="text" id="new-author" placeholder="اسم الشارح/المؤلف">
-    <input type="text" id="new-url" placeholder="رابط الـ PDF المباشر">
-    <input type="text" id="new-img" placeholder="رابط صورة الغلاف">
-    <button class="btn" onclick="publishBook()">نشر الكتاب</button>
-  </div>
-</div>
+        let currentBookIndex = null;
 
-<script>
-  let books = [
-    {
-      title: "صحيح البخاري",
-      author: "لجنة التحقيق",
-      url: "https://archive.org/download/Sahih-al-Bukhari-Bait-al-Sunnah/Sahih-al-Bukhari-Bait-al-Sunnah-001.pdf",
-      img: "https://i.pinimg.com/736x/25/1c/e7/251ce7d5a759aca85c74060cf8bf11aa.jpg",
-      rating: 5
-    }
-  ];
+        function showView(viewId) {
+            document.querySelectorAll('.view-mode').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            if(viewId === 'reader-view') {
+                document.getElementById('search').style.display = 'inline-block';
+            } else {
+                document.getElementById('search').style.display = 'none';
+            }
+        }
 
-  let currentBookIndex = null;
+        function filterBooks() {
+            let query = document.getElementById('search').value;
+            let filtered = books.filter(b => b.title.includes(query) || b.author.includes(query));
+            renderBooks(filtered);
+        }
 
-  function showView(viewId) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.getElementById(viewId).classList.add('active');
-    if(viewId === 'reader-view') {
-      document.getElementById('viewer-area').style.display = 'none';
-      document.getElementById('book-grid').style.display = 'grid';
-      renderBooks(books);
-    }
-  }
+        function openBook(index) {
+            currentBookIndex = index;
+            document.getElementById('pdf-frame').src = books[index].url;
+            showView('viewer-area');
+        }
 
-  function renderBooks(bookList) {
-    const grid = document.getElementById('book-grid');
-    grid.innerHTML = '';
-    bookList.forEach((b, index) => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.onclick = () => openBook(b);
-      card.innerHTML = `
-        <img src="${b.img}" onerror="this.src='https://via.placeholder.com/150'">
-        <h3>${b.title}</h3>
-        <p>الشارح: ${b.author}</p>
-        <div class="rating">${'⭐'.repeat(b.rating)}</div>
-      `;
-      grid.appendChild(card);
-    });
-  }
+        function publishBook() {
+            const title = document.getElementById('new-title').value;
+            const author = document.getElementById('new-author').value;
+            const url = document.getElementById('new-url').value;
+            const img = document.getElementById('new-img').value;
 
-  function filterBooks() {
-    const query = document.getElementById('search').value;
-    const filtered = books.filter(b => b.title.includes(query) || b.author.includes(query));
-    renderBooks(filtered);
-  }
+            if (!title || !url) {
+                alert('يرجى تعبئة عنوان ورابط الكتاب!');
+                return;
+            }
 
-  function openBook(book) {
-    document.getElementById('book-grid').style.display = 'none';
-    document.getElementById('search').style.display = 'none';
-    
-    document.getElementById('viewing-title').innerText = book.title;
-    document.getElementById('viewing-author').innerText = book.author;
-    document.getElementById('viewing-stars').innerText = '⭐'.repeat(book.rating);
-    document.getElementById('pdf-frame').src = book.url;
-    
-    document.getElementById('viewer-area').style.display = 'block';
-  }
+            books.push({title, author, url, img, rating: 5});
+            alert('تم نشر الكتاب بنجاح');
+            document.getElementById('new-title').value = '';
+            document.getElementById('new-author').value = '';
+            document.getElementById('new-url').value = '';
+            document.getElementById('new-img').value = '';
+            showView('reader-view');
+        }
 
-  function closeBook() {
-    showView('reader-view');
-    document.getElementById('search').style.display = 'inline-block';
-  }
+        function rateBook(stars) {
+            alert(`شكراً لتقييمك!`);
+        }
 
-  function publishBook() {
-    const title = document.getElementById('new-title').value;
-    const author = document.getElementById('new-author').value;
-    const url = document.getElementById('new-url').value;
-    const img = document.getElementById('new-img').value;
+        function renderBooks(bookList) {
+            const grid = document.getElementById('book-grid');
+            grid.innerHTML = '';
+            bookList.forEach((b, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = () => openBook(index);
+                card.innerHTML = `
+                    <img src="${b.img}" onerror="this.src='via.placeholder.com/150'" style="width: 100%; height: 250px; object-fit: cover; border-radius: 10px;">
+                    <h3>${b.title}</h3>
+                    <p>${b.author}</p>
+                    <div>${ '<span style="color:gold">★</span>'.repeat(b.rating) }</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
 
-    if(!title || !url) {
-      alert("يرجى تعبئة العنوان ورابط الكتاب المباشر.");
-      return;
-    }
-
-    books.push({ title, author, url, img, rating: 5 });
-    alert("تم نشر الكتاب بنجاح!");
-    document.getElementById('new-title').value = '';
-    document.getElementById('new-author').value = '';
-    document.getElementById('new-url').value = '';
-    document.getElementById('new-img').value = '';
-    showView('reader-view');
-  }
-
-  function rateBook(stars) {
-    alert("شكراً لتقييمك!");
-  }
-
-  renderBooks(books);
-</script>
+        renderBooks(books);
+    </script>
 </body>
-  
 </html>
