@@ -1,0 +1,1 @@
+localStorage.setItem    localStorage.getItem  JSON.parse
